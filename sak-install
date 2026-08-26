@@ -1,0 +1,37 @@
+#!/bin/bash
+
+green='\033[0;32m'
+yellow='\033[1;33m'
+red='\033[0;31m'
+blue='\033[0;36m'
+nocolor='\033[0m'
+
+token="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"
+username="JediFonseca"
+repo="swiss-army-knife"
+clone_path="$HOME/Downloads/sak_clone"
+installation_path="$HOME/.local/bin"
+
+if command -v apt &> /dev/null; then
+	sudo apt update
+	sudo apt install -y curl git wget
+elif command -v dnf &> /dev/null; then
+	sudo dnf install -y wget git curl
+elif command -v pacman &> /dev/null; then
+	sudo pacman -S --noconfirm --needed curl wget git
+fi
+
+rm -rf "$installation_path/services"
+rm -f "$installation_path/sak"
+rm -rf "$clone_path"
+
+git clone "https://${username}:${token}@github.com/${username}/${repo}.git" "$clone_path"\
+ || { echo -e "${red}Error:${nocolor} There was a problem cloning the repository."; exit 1; }
+
+mkdir -p "$installation_path"
+cp -r "$clone_path/services" "$installation_path"
+cp "$clone_path/sak" "$installation_path"
+rm -rf "$clone_path"
+
+chmod +x "$installation_path/sak"
+chmod +x "$installation_path/services/"*
