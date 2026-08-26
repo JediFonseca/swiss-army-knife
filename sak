@@ -33,7 +33,7 @@ while true; do
 			/usr/bin/pcdata
 		else
 			echo "PCData is not installed! Do you wish to install ('wget' will be also installed, if not already)?"
-			read -pr "Y or N: " opcao2
+			read -p "Y or N: " opcao2
 			if [[ "$opcao2" == [Yy] ]]; then
 				if command -v wget &> /dev/null; then
 					wget -qO- "https://raw.githubusercontent.com/JediFonseca/pcdata/refs/heads/main/pcdata-install" | sudo bash
