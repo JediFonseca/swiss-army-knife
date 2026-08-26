@@ -1,0 +1,190 @@
+#!/bin/bash
+
+# Definição de variáveis ------------------------------------------------------------------------------------------- #
+
+# Cores
+green='\033[0;32m'
+yellow='\033[1;33m'
+red='\033[0;31m'
+blue='\033[0;36m'
+nocolor='\033[0m' # Reseta a cor para o padrão do terminal.
+
+# Meu homelab:
+homelab="jedifonseca@100.79.191.98"
+
+# Pastas para a sincronização de músicas
+musicsource="/mnt/Arquivo/Músicas (Arquivo)/"
+musicdest="/mnt/dados/Músicas/"
+
+# Pastas para a sincronização de documentos
+docsource="/mnt/Arquivo/Documentos/"
+docdest="/mnt/dados/Documentos/"
+
+# Pastas para a sincronização de imagens
+imgsource="/mnt/Arquivo/Imagens/"
+imgdest="/mnt/dados/Imagens/"
+
+# Nome do remoto do Google Drive, definido no "rclone":
+gdriveremote="gdrive"
+
+# Variáveis para a sincronização remota dos documentos
+gdrive_docs_source="/mnt/Arquivo/Documentos/"
+gdrive_docs_id="1r9MjQEYrFilu-qJneK24_NaqxjRU3--K"
+
+# Variáveis para a sincronização remota das imagens
+gdrive_img_source="/mnt/Arquivo/Imagens/"
+gdrive_img_id="18uxD5feGq2Aul8GsDdRmas4MmNPHaiJC"
+
+# Checagens de segurança ------------------------------------------------------------------------------------------- #
+
+command -v rsync >/dev/null || {
+    echo -e "${red}Erro:${nocolor} o 'rsync' não está instalado."
+    exit 1
+}
+
+command -v rclone >/dev/null || {
+    echo -e "${red}Erro:${nocolor} o 'rclone' não está instalado."
+    exit 1
+}
+
+# Função 01 -------------------------------------------------------------------------------------------------------- #
+
+sync_local () {
+
+# Mensagem inicial
+
+clear
+echo -e "${blue}$3${nocolor}"
+echo -e "${yellow}A pasta de origem é:${nocolor}"
+echo "$1"
+echo
+echo -e "${yellow}A pasta de destino é:${nocolor}"
+echo "$2"
+echo
+if [[ "$4" == "n" ]] ; then
+	echo -e "${green}SIMULAÇÃO ATIVADA${nocolor}"
+	echo
+else
+	echo -e "${red}SIMULAÇÃO DESATIVADA${nocolor}"
+	echo
+fi
+echo -e -n "${yellow}Pressione ENTER para iniciar a sincronização ou CTRL+C para cancelar.${nocolor}"
+read -r
+
+# Fase de sincronização
+
+        rsync -a"$4" --no-perms --no-owner --no-group --delete --stats --info=progress2 --modify-window=2 -e ssh "$1" "$homelab":"$2"
+		echo
+        echo -e "${green}Sincronização finalizada!${nocolor}"
+
+}
+
+# Função 02 -------------------------------------------------------------------------------------------------------- #
+
+local_all () {
+
+sync_local "$musicsource" "$musicdest" "Sincronização de músicas:\n"
+echo -e -n "${yellow}\nPressione ENTER para continuar com a sincronização ou CTRL+C para cancelar.\n${nocolor}"
+read -r
+
+sync_local "$docsource" "$docdest" "Sincronização de documentos:\n"
+echo -e -n "${yellow}\nPressione ENTER para continuar com a sincronização ou CTRL+C para cancelar.\n${nocolor}"
+read -r
+
+sync_local "$imgsource" "$imgdest" "Sincronização de imagens:\n"
+
+}
+
+# Função 03 -------------------------------------------------------------------------------------------------------- #
+
+
+sync_remote () {
+
+# Mensagem inicial
+
+clear
+echo -e "${blue}$3${nocolor}"
+echo -e "${yellow}A pasta de origem é:${nocolor}"
+echo "$1"
+echo
+if [[ "$4" == "--dry-run" ]] ; then
+	echo -e "${green}SIMULAÇÃO ATIVADA${nocolor}"
+	echo
+else
+	echo -e "${red}SIMULAÇÃO DESATIVADA${nocolor}"
+	echo
+fi
+echo -e -n "${yellow}Pressione ENTER para iniciar a sincronização ou CTRL+C para cancelar.\n${nocolor}"
+read -r
+
+# Fase de sincronização
+
+        rclone sync "$1" "$gdriveremote,root_folder_id=$2:" $4 -P
+		echo
+        echo -e "${green}Sincronização finalizada!${nocolor}"
+
+}
+
+# Função 04 -------------------------------------------------------------------------------------------------------- #
+
+remote_all () {
+
+sync_remote "$gdrive_docs_source" "$gdrive_docs_id" "Sincronização de documentos - online:\n"
+echo -e -n "${yellow}\nPressione ENTER para continuar com a sincronização ou CTRL+C para cancelar.\n${nocolor}"
+read -r
+
+sync_remote "$gdrive_img_source" "$gdrive_img_id" "Sincronização de imagens - online:\n"
+
+}
+
+
+# Execução do script ----------------------------------------------------------------------------------------------- #
+
+while true; do
+
+	clear
+	
+	echo -e "${blue}========================= FILES SYNCING MENU =========================${nocolor}"
+	echo "1) Sync 'Music' folder - local (Simulation)"
+	echo "2) Sync 'Documents' folder - local (Simulation)"
+	echo "3) Sync 'Images' folder - local (Simulation)"
+	echo "4) Sync 'Music' folder - local"
+	echo "5) Sync 'Documents' folder - local"
+	echo "6) Sync 'Images' folder - local"
+	echo "7) Sync everything - local"
+	echo -e "${blue}--------------------------------------------------------${nocolor}"
+	echo "8) Sync 'Documents' folder - online (Simulation)"
+	echo "9) Sync 'Images' folder - online (Simulation)"
+	echo "10) Sync 'Documents' folder - online"
+	echo "11) Sync 'Images' folder - online"
+	echo "12) Sync everything - online"
+	echo "0) Exit"
+	echo "00) Main MENU"
+	echo
+	echo -en "${yellow}Escolha uma opção: ${nocolor}"
+	read -r opcao
+	
+	case "$opcao" in
+		1) sync_local "$musicsource" "$musicdest" "Sincronização de músicas (Simulação):\n" "n" ;;
+		2) sync_local "$docsource" "$docdest" "Sincronização de documentos (Simulação):\n" "n" ;;
+		3) sync_local "$imgsource" "$imgdest" "Sincronização de imagens (Simulação):\n" "n" ;;
+		4) sync_local "$musicsource" "$musicdest" "Sincronização de músicas:\n" ;;
+		5) sync_local "$docsource" "$docdest" "Sincronização de documentos:\n" ;;
+		6) sync_local "$imgsource" "$imgdest" "Sincronização de imagens:\n" ;;
+		7) local_all ;;
+		8) sync_remote "$gdrive_docs_source" "$gdrive_docs_id" "Sincronização de documentos - online (Simulação):\n" "--dry-run" ;;
+		9) sync_remote "$gdrive_img_source" "$gdrive_img_id" "Sincronização de imagens - online (Simulação):\n" "--dry-run" ;;
+		10) sync_remote "$gdrive_docs_source" "$gdrive_docs_id" "Sincronização de documentos - online:\n" ;;
+		11) sync_remote "$gdrive_img_source" "$gdrive_img_id" "Sincronização de imagens - online:\n" ;;
+		12) remote_all ;;
+		0) echo ;
+		   echo -e "${yellow}Script encerrado!${nocolor}" ;
+		   echo ; exit 0 ;;
+		00) break ;;
+		*) echo -en "${red}\nOpção inválida!\n\n${nocolor}"  ;;
+	esac
+	
+	echo -e -n "${yellow}Pressione ENTER para voltar ao menu ou CTRL+C para encerrar o script.${nocolor}"
+	read -r
+	
+done

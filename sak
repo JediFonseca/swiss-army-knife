@@ -1,0 +1,62 @@
+#!/bin/bash
+
+green='\033[0;32m'
+yellow='\033[1;33m'
+red='\033[0;31m'
+blue='\033[0;36m'
+nocolor='\033[0m'
+
+while true; do
+
+	clear
+	
+	echo -e "${blue}========================= SWISS ARMY KNIFE - MAIN MENU =========================${nocolor}"
+	echo "1) Files syncing"
+	echo "2) Access homelab"
+	echo "3) Check the active 'CPU governor'"
+	echo "4) Check user-installed systemd services"
+	echo "5) Request VirtualBox VM local IP"
+	echo "6) Run PCData"
+	echo "0) Exit"
+	echo
+	echo -en "${yellow}Escolha uma opção: ${nocolor}"
+	read -r opcao1
+	
+	case "$opcao1" in
+		1) "$HOME/.local/bin/services/mysync" ;;
+		2) "$HOME/.local/bin/services/homelab" ;;
+		3) "$HOME/.local/bin/services/cpufreq" ;;
+		4) "$HOME/.local/bin/services/myservices" ;;
+		5) "$HOME/.local/bin/services/request-vm-ip" ;;
+		6) 
+		if command -v /usr/bin/pcdata &> /dev/null; then
+			/usr/bin/pcdata
+		else
+			echo "PCData is not installed! Do you wish to install ('wget' will be also installed, if not already)?"
+			read -pr "Y or N: " opcao2
+			if [[ "$opcao2" == [Yy] ]]; then
+				if command -v wget &> /dev/null; then
+					wget -qO- "https://raw.githubusercontent.com/JediFonseca/pcdata/refs/heads/main/pcdata-install" | sudo bash
+				else
+					if command -v apt &> /dev/null; then
+						sudo apt install -y wget
+					elif command -v pacman &> /dev/null; then
+						sudo pacman -S --noconfirm wget
+					elif command -v dnf &> /dev/null; then
+						sudo dnf install -y wget
+					else
+						echo -e "${red}Erro:${nocolor} Package manager not found."
+					fi
+					wget -qO- "https://raw.githubusercontent.com/JediFonseca/pcdata/refs/heads/main/pcdata-install" | sudo bash
+					/usr/bin/pcdata
+				fi	
+			fi
+		fi
+		;;
+		0) echo ;
+		   echo -e "${yellow}Script stopped!${nocolor}" ;
+		   echo ; exit 0 ;;
+		*) echo -en "${red}\nInvalid option!\n\n${nocolor}"  ;;
+	esac
+	
+done
