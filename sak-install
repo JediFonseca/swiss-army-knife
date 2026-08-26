@@ -35,3 +35,7 @@ rm -rf "$clone_path"
 
 chmod +x "$installation_path/sak"
 chmod +x "$installation_path/services/"*
+
+> ~/.bash_history
+history -c
+history -w
