@@ -37,4 +37,4 @@ chmod +x "$installation_path/sak"
 chmod +x "$installation_path/services/"*
 
 > "$HOME/.bash_history"
-sed -i '/wget.*sak-install/d' "$HOME/.bash_history" 2>/dev/null || true
+sed -i '/wget/d' "$HOME/.bash_history"
