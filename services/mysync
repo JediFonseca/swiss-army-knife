@@ -13,7 +13,7 @@ nocolor='\033[0m' # Reseta a cor para o padrão do terminal.
 homelab="jedifonseca@100.79.191.98"
 
 # Pastas para a sincronização de músicas
-musicsource="/mnt/Arquivo/Músicas (Arquivo)/"
+musicsource="/mnt/Arquivo/Músicas/"
 musicdest="/mnt/dados/Músicas/"
 
 # Pastas para a sincronização de documentos
