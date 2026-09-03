@@ -11,8 +11,6 @@ username="JediFonseca"
 repo="swiss-army-knife"
 clone_path="$HOME/Downloads/sak_clone"
 installation_path="$HOME/.local/bin"
-icon_path="$HOME/.local/share/icons"
-desktop_file_path="$HOME/.local/share/applications"
 
 if command -v apt &> /dev/null; then
 	sudo apt update
@@ -26,32 +24,14 @@ fi
 rm -rf "$installation_path/services"
 rm -f "$installation_path/sak"
 rm -rf "$clone_path"
-rm -f "$icon_path/sak.png"
-rm -f "$desktop_file_path/sak.desktop"
 
 git clone "https://${username}:${token}@github.com/${username}/${repo}.git" "$clone_path"\
  || { echo -e "${red}Error:${nocolor} There was a problem cloning the repository."; exit 1; }
 
 mkdir -p "$installation_path"
-mkdir -p "$icon_path"
-mkdir -p "$desktop_file_path"
-
 
 cp -r "$clone_path/services" "$installation_path"
 cp "$clone_path/sak" "$installation_path"
-cp "$clone_path/sak.png" "$icon_path/sak.png"
-
-cat <<EOF > "$desktop_file_path/sak.desktop"
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Swiss Army Knife
-Comment=Lançador central para scripts e utilitários
-Exec="$HOME/.local/bin/sak"
-Icon=$icon_path/sak.png
-Terminal=true
-Categories=Utility;System;
-EOF
 
 rm -rf "$clone_path"
 
