@@ -176,9 +176,7 @@ while true; do
 		10) sync_remote "$gdrive_docs_source" "$gdrive_docs_id" "Sincronização de documentos - online:\n" ;;
 		11) sync_remote "$gdrive_img_source" "$gdrive_img_id" "Sincronização de imagens - online:\n" ;;
 		12) remote_all ;;
-		0) echo ;
-		   echo -e "${yellow}Script encerrado!${nocolor}" ;
-		   echo ; exit 0 ;;
+		0) exit 0 ;;
 		*) echo -en "${red}\nOpção inválida!\n\n${nocolor}"  ;;
 	esac
 	
