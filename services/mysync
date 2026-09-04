@@ -159,7 +159,6 @@ while true; do
 	echo "11) Sync 'Images' folder - online"
 	echo "12) Sync everything - online"
 	echo "0) Exit"
-	echo "00) Main MENU"
 	echo
 	echo -en "${yellow}Escolha uma opção: ${nocolor}"
 	read -r opcao
@@ -180,7 +179,6 @@ while true; do
 		0) echo ;
 		   echo -e "${yellow}Script encerrado!${nocolor}" ;
 		   echo ; exit 0 ;;
-		00) break ;;
 		*) echo -en "${red}\nOpção inválida!\n\n${nocolor}"  ;;
 	esac
 	
