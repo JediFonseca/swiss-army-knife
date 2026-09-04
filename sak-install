@@ -37,6 +37,3 @@ rm -rf "$clone_path"
 
 chmod +x "$installation_path/sak"
 chmod +x "$installation_path/services/"*
-
-> "$HOME/.bash_history"
-sed -i '/wget/d' "$HOME/.bash_history" &> /dev/null || true
