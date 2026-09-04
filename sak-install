@@ -6,7 +6,7 @@ red='\033[0;31m'
 blue='\033[0;36m'
 nocolor='\033[0m'
 
-token="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"
+token="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"
 username="JediFonseca"
 repo="swiss-army-knife"
 clone_path="$HOME/Downloads/sak_clone"
