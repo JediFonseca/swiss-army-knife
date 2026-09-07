@@ -10,7 +10,7 @@ blue='\033[0;36m'
 nocolor='\033[0m' # Reseta a cor para o padrão do terminal.
 
 # Meu homelab:
-homelab="jedifonseca@100.79.191.98"
+homelab="jedifonseca@100.70.152.117"
 
 # Pastas para a sincronização de músicas
 musicsource="/mnt/Arquivo/Músicas/"
