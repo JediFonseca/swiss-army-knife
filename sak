@@ -11,6 +11,9 @@ while true; do
 	clear
 	
 	echo -e "${blue}========================= SWISS ARMY KNIFE - MAIN MENU =========================${nocolor}"
+	echo
+	echo "Version: 1.1"
+	echo
 	echo "1) Files syncing"
 	echo "2) Access homelab"
 	echo "3) Check the active 'CPU governor'"
