@@ -24,7 +24,7 @@ while true; do
 	
 	case "$opcao1" in
 		1) "$HOME/.local/bin/services/mysync" ;;
-		2) "$HOME/.local/bin/services/homelab" ;;
+		2) exec "$HOME/.local/bin/services/homelab" ;;
 		3) "$HOME/.local/bin/services/cpufreq" ;;
 		4) "$HOME/.local/bin/services/myservices" ;;
 		5) "$HOME/.local/bin/services/request-vm-ip" ;;
