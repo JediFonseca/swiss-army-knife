@@ -30,6 +30,8 @@ documentos_gdrive="1r9MjQEYrFilu-qJneK24_NaqxjRU3--K"
 
 sinc_homelab () {
 
+clear
+
 rsync -avP --delete "$imagens1" "$remote:$imagens2"
 
 echo -e -n "\n${yellow}Imagens sincronizadas! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}\n"
@@ -62,6 +64,8 @@ rsync -avP --delete "$jogosand1" "$remote:$jogosand2"
 # Função 02 ---------------------------------------------------------------------------------------------------------#
 
 sinc_remoto () {
+
+clear
 
 rclone sync "$imagens1" "$gdriveremote,root_folder_id=$imagens_gdrive:" -P
 
