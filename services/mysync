@@ -26,49 +26,53 @@ gdriveremote="gdrive"
 imagens_gdrive="18uxD5feGq2Aul8GsDdRmas4MmNPHaiJC"
 documentos_gdrive="1r9MjQEYrFilu-qJneK24_NaqxjRU3--K"
 
-# Execução
+# Função 01 ---------------------------------------------------------------------------------------------------------#
 
 sinc_homelab () {
 
 rsync -avP --delete "$imagens1" "$remote:$imagens2"
 
-echo -e -n "${yellow}Imagens sincronizadas! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}"
+echo -e -n "\n${yellow}Imagens sincronizadas! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}\n"
 read -r
 
 rsync -avP --delete "$documentos1" "$remote:$documentos2"
 
-echo -e -n "${yellow}Documentos sincronizados! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}"
+echo -e -n "\n${yellow}Documentos sincronizados! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}\n"
 read -r
 
 rsync -avP --delete "$videos1" "$remote:$videos2"
 
-echo -e -n "${yellow}Vídeos sincronizados! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}"
+echo -e -n "\n${yellow}Vídeos sincronizados! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}\n"
 read -r
 
 rsync -avP --delete "$musicas1" "$remote:$musicas2"
 
-echo -e -n "${yellow}Músicas sincronizadas! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}"
+echo -e -n "\n${yellow}Músicas sincronizadas! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}\n"
 read -r
 
 rsync -avP --delete "$arqdejogos1" "$remote:$arqdejogos2"
 
-echo -e -n "${yellow}Arquivos de Jogos sincronizados! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}"
+echo -e -n "\n${yellow}Arquivos de Jogos sincronizados! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}\n"
 read -r
 
 rsync -avP --delete "$jogosand1" "$remote:$jogosand2"
 
 }
 
+# Função 02 ---------------------------------------------------------------------------------------------------------#
+
 sinc_remoto () {
 
 rclone sync "$imagens1" "$gdriveremote,root_folder_id=$imagens_gdrive:" -P
 
-echo -e -n "${yellow}Imagens sincronizadas! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}"
+echo -e -n "\n${yellow}Imagens sincronizadas! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}\n"
 read -r
 
 rclone sync "$documentos1" "$gdriveremote,root_folder_id=$documentos_gdrive:" -P
 
 }
+
+# Execução ----------------------------------------------------------------------------------------------------------#
 
 while true; do
 
@@ -86,6 +90,7 @@ while true; do
 	echo "8) Sincronizar Imagens (Google Drive)"
 	echo "9) Sincronizar Documentos (Google Drive)"
 	echo "10) Sincronizar Tudo (Google Drive)"
+	echo "0) Sair"
 	echo
 	echo -en "${yellow}Escolha uma opção: ${nocolor}"
 	read -r opcao
@@ -101,10 +106,11 @@ while true; do
 		8) rclone sync "$imagens1" "$gdriveremote,root_folder_id=$imagens_gdrive:" -P ;;
 		9) rclone sync "$documentos1" "$gdriveremote,root_folder_id=$documentos_gdrive:" -P ;;
 		10) sinc_remoto ;;
+		0) exit 0 ;;
 		*) echo -en "${red}\nOpção inválida!\n\n${nocolor}"  ;;
 	esac
 	
-	echo -e -n "${yellow}Pressione ENTER para voltar ao menu ou CTRL+C para encerrar o script.${nocolor}"
+	echo -e -n "\n${yellow}Pressione ENTER para voltar ao menu ou CTRL+C para encerrar o script.${nocolor}"
 	read -r
 	
 done
