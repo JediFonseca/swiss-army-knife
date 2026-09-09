@@ -33,37 +33,37 @@ sinc_homelab () {
 clear
 
 ssh $remote "mkdir -p $imagens2"
-rsync -avP --delete "$imagens1" "$remote:$imagens2"
+rsync -avP --info=progress2 --delete "$imagens1" "$remote:$imagens2"
 
 echo -e -n "\n${yellow}Imagens sincronizadas! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}\n"
 read -r
 
 ssh $remote "mkdir -p $documentos2"
-rsync -avP --delete "$documentos1" "$remote:$documentos2"
+rsync -avP --info=progress2 --delete "$documentos1" "$remote:$documentos2"
 
 echo -e -n "\n${yellow}Documentos sincronizados! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}\n"
 read -r
 
 ssh $remote "mkdir -p $videos2"
-rsync -avP --delete "$videos1" "$remote:$videos2"
+rsync -avP --info=progress2 --delete "$videos1" "$remote:$videos2"
 
 echo -e -n "\n${yellow}Vídeos sincronizados! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}\n"
 read -r
 
 ssh $remote "mkdir -p $musicas2"
-rsync -avP --delete "$musicas1" "$remote:$musicas2"
+rsync -avP --info=progress2 --delete "$musicas1" "$remote:$musicas2"
 
 echo -e -n "\n${yellow}Músicas sincronizadas! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}\n"
 read -r
 
 ssh $remote "mkdir -p $arqdejogos2"
-rsync -avP --delete "$arqdejogos1" "$remote:$arqdejogos2"
+rsync -avP --info=progress2 --delete "$arqdejogos1" "$remote:$arqdejogos2"
 
 echo -e -n "\n${yellow}Arquivos de Jogos sincronizados! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}\n"
 read -r
 
 ssh $remote "mkdir -p $jogosand2"
-rsync -avP --delete "$jogosand1" "$remote:$jogosand2"
+rsync -avP --info=progress2 --delete "$jogosand1" "$remote:$jogosand2"
 
 }
 
