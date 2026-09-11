@@ -41,7 +41,7 @@ read -r
 ssh $remote "mkdir -p $documentos2"
 rsync -ah --partial --info=progress2 --delete "$remote:$documentos2" "$documentos1"
 
-echo -e -n "\n${yellow}Documentos sincronizados! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}\n"
+echo -e -n "\n${yellow}Documentos sincronizados! Pressione ENTER para voltar ao menu ou CTRL+C para encerrar o script.${nocolor}\n"
 read -r
 
 ssh $remote "mkdir -p $videos2"
@@ -65,6 +65,9 @@ read -r
 ssh $remote "mkdir -p $jogosand2"
 rsync -ah --partial --info=progress2 --delete "$remote:$jogosand2" "$jogosand1"
 
+echo -e -n "\n${yellow}Jogos de Android sincronizados! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}\n"
+read -r
+
 }
 
 # Função 02 ---------------------------------------------------------------------------------------------------------#
@@ -79,6 +82,9 @@ echo -e -n "\n${yellow}Imagens sincronizadas! Pressione ENTER para continuar ou 
 read -r
 
 rclone sync "$documentos1" "$gdriveremote,root_folder_id=$documentos_gdrive:" -P
+
+echo -e -n "\n${yellow}Documentos sincronizados! Pressione ENTER para voltar ao menu ou CTRL+C para encerrar o script.${nocolor}\n"
+read -r
 
 }
 
@@ -119,8 +125,5 @@ while true; do
 		0) exit 0 ;;
 		*) echo -en "${red}\nOpção inválida!\n\n${nocolor}"  ;;
 	esac
-	
-	echo -e -n "\n${yellow}Pressione ENTER para voltar ao menu ou CTRL+C para encerrar o script.${nocolor}"
-	read -r
 	
 done
