@@ -107,3 +107,6 @@ rclone sync "$imagens3" "$gdriveremote,root_folder_id=$imagens_gdrive:" -P
 safety_checks
 sinc_local
 sinc_remoto
+
+echo -e -n "${yellow}\nPressione "ENTER" para voltar ao menu ou CTRL+C para cancelar.${nocolor}"
+read -r
