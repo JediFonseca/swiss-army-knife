@@ -1,129 +1,109 @@
 #!/bin/bash
 
-# Variáveis
+set -u
 
+blue='\033[0;36m'
+green='\033[0;32m'
 yellow='\033[1;33m'
 red='\033[0;31m'
-blue='\033[0;36m'
 nocolor='\033[0m'
 
 remote="jedifonseca@100.80.135.72"
+remote_ip="100.80.135.72"
 
-imagens1="/mnt/Arquivo/Imagens/"
-imagens2="/mnt/dados/Imagens/"
-documentos1="/mnt/Arquivo/Documentos/"
-documentos2="/mnt/dados/Documentos/"
-videos1="/mnt/Arquivo/Vídeos/Diversos/"
-videos2="/mnt/dados/Vídeos/Diversos/"
-musicas1="/mnt/Arquivo/Músicas/"
-musicas2="/mnt/dados/Músicas/"
-arqdejogos1="/mnt/Arquivo/Jogos/Arquivos de Jogos/"
-arqdejogos2="/mnt/dados/Jogos/Arquivos de Jogos/"
-jogosand1="/mnt/Arquivo/Jogos/Android/"
-jogosand2="/mnt/dados/Jogos/Android/"
+documentos1="/mnt/dados/Documentos/"
+imagens1="/mnt/dados/Imagens/"
+musicas1="/mnt/dados/Músicas/"
+midias1="/mnt/dados/Mídias/"
+jogos_android1="/mnt/dados/Jogos/Jogos Android/"
+arquivos_de_jogos1="/mnt/dados/Jogos/Arquivos de Jogos/"
+videos_diversos1="/mnt/dados/Vídeos/Diversos/"
+videos_friends1="/mnt/dados/Vídeos/Friends/"
+videos_shows1="/mnt/dados/Vídeos/Shows/"
+
+documentos2="/mnt/Backup/Documentos/"
+imagens2="/mnt/Backup/Imagens/"
+musicas2="/mnt/Backup/Músicas/"
+midias2="/mnt/Backup/Mídias/"
+jogos_android2="/mnt/Backup/Jogos/Jogos Android/"
+arquivos_de_jogos2="/mnt/Backup/Jogos/Arquivos de Jogos/"
+videos_diversos2="/mnt/Backup/Vídeos/Diversos/"
+videos_friends2="/mnt/Backup/Vídeos/Friends/"
+videos_shows2="/mnt/Backup/Vídeos/Shows/"
 
 gdriveremote="gdrive"
+documentos3="$HOME/.mnt/NAS/mnt/dados/Documentos/"
+imagens3="$HOME/.mnt/NAS/mnt/dados/Imagens/"
 imagens_gdrive="18uxD5feGq2Aul8GsDdRmas4MmNPHaiJC"
 documentos_gdrive="1r9MjQEYrFilu-qJneK24_NaqxjRU3--K"
 
-# Função 01 ---------------------------------------------------------------------------------------------------------#
+# ------------------------------------------------------------------------------------------------------------------------
 
-sinc_homelab () {
+safety_checks () {
 
 clear
 
-ssh $remote "mkdir -p $imagens2"
-rsync -ah --partial --info=progress2 --delete "$remote:$imagens2" "$imagens1"
+echo -e "${blue}Testando conexão com o Serverus...${nocolor}"
 
-echo -e -n "\n${yellow}Imagens sincronizadas! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}\n"
-read -r
+if ping -c3 -W3 $remote_ip > /dev/null; then
+    echo -e "${green}\nConexão OK!${nocolor}"
+else
+    echo -e "${red}\nServidor não responde!${nocolor}"
+    exit 3
+fi
 
-ssh $remote "mkdir -p $documentos2"
-rsync -ah --partial --info=progress2 --delete "$remote:$documentos2" "$documentos1"
-
-echo -e -n "\n${yellow}Documentos sincronizados! Pressione ENTER para voltar ao menu ou CTRL+C para encerrar o script.${nocolor}\n"
-read -r
-
-ssh $remote "mkdir -p $videos2"
-rsync -ah --partial --info=progress2 --delete "$remote:$videos2" "$videos1"
-
-echo -e -n "\n${yellow}Vídeos sincronizados! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}\n"
-read -r
-
-ssh $remote "mkdir -p $musicas2"
-rsync -ah --partial --info=progress2 --delete "$remote:$musicas2" "$musicas1"
-
-echo -e -n "\n${yellow}Músicas sincronizadas! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}\n"
-read -r
-
-ssh $remote "mkdir -p $arqdejogos2"
-rsync -ah --partial --info=progress2 --delete "$remote:$arqdejogos2" "$arqdejogos1"
-
-echo -e -n "\n${yellow}Arquivos de Jogos sincronizados! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}\n"
-read -r
-
-ssh $remote "mkdir -p $jogosand2"
-rsync -ah --partial --info=progress2 --delete "$remote:$jogosand2" "$jogosand1"
-
-echo -e -n "\n${yellow}Jogos de Android sincronizados! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}\n"
-read -r
+mountpoint -q /mnt/Backup || { echo -e "${red}Backup não montado!${nocolor}"; exit 1; }
+mountpoint -q "$HOME/.mnt/NAS" || { echo -e "${red}NAS não montado!${nocolor}"; exit 2; }
 
 }
 
-# Função 02 ---------------------------------------------------------------------------------------------------------#
+# ------------------------------------------------------------------------------------------------------------------------
+
+sinc_local () {
+
+echo -e "${yellow}\nSincronizando os Documentos...${nocolor}"
+rsync -ah --partial --info=progress2 --stats --delete "$remote:$documentos1" "$documentos2"
+
+echo -e "${yellow}\nSincronizando as Imagens...${nocolor}"
+rsync -ah --partial --info=progress2 --stats --delete "$remote:$imagens1" "$imagens2"
+
+echo -e "${yellow}\nSincronizando as Músicas...${nocolor}"
+rsync -ah --partial --info=progress2 --stats --delete "$remote:$musicas1" "$musicas2"
+
+echo -e "${yellow}\nSincronizando as Mídias...${nocolor}"
+rsync -ah --partial --info=progress2 --stats --delete "$remote:$midias1" "$midias2"
+
+echo -e "${yellow}\nSincronizando os Jogos de Android...${nocolor}"
+rsync -ah --partial --info=progress2 --stats --delete "$remote:$jogos_android1" "$jogos_android2"
+
+echo -e "${yellow}\nSincronizando os Arquivos de Jogos...${nocolor}"
+rsync -ah --partial --info=progress2 --stats --delete "$remote:$arquivos_de_jogos1" "$arquivos_de_jogos2"
+
+echo -e "${yellow}\nSincronizando os Vídeos Diversos...${nocolor}"
+rsync -ah --partial --info=progress2 --stats --delete "$remote:$videos_diversos1" "$videos_diversos2"
+
+echo -e "${yellow}\nSincronizando os Vídeos de Friends...${nocolor}"
+rsync -ah --partial --info=progress2 --stats --delete "$remote:$videos_friends1" "$videos_friends2"
+
+echo -e "${yellow}\nSincronizando os Vídeos de Shows...${nocolor}"
+rsync -ah --partial --info=progress2 --stats --delete "$remote:$videos_shows1" "$videos_shows2"
+
+}
+
+# ------------------------------------------------------------------------------------------------------------------------
 
 sinc_remoto () {
 
-clear
+echo -e "${yellow}\nSincronizando os Documentos com o Google Drive...${nocolor}"
+rclone sync "$documentos3" "$gdriveremote,root_folder_id=$documentos_gdrive:" -P
 
-rclone sync "$imagens1" "$gdriveremote,root_folder_id=$imagens_gdrive:" -P
-
-echo -e -n "\n${yellow}Imagens sincronizadas! Pressione ENTER para continuar ou CTRL+C para parar.${nocolor}\n"
-read -r
-
-rclone sync "$documentos1" "$gdriveremote,root_folder_id=$documentos_gdrive:" -P
-
-echo -e -n "\n${yellow}Documentos sincronizados! Pressione ENTER para voltar ao menu ou CTRL+C para encerrar o script.${nocolor}\n"
-read -r
+echo -e "${yellow}\nSincronizando as Imagens com o Google Drive...${nocolor}"
+rclone sync "$imagens3" "$gdriveremote,root_folder_id=$imagens_gdrive:" -P
 
 }
 
-# Execução ----------------------------------------------------------------------------------------------------------#
+# ------------------------------------------------------------------------------------------------------------------------
 
-while true; do
-
-	clear
-	
-	echo -e "${blue}================= SINCRONIZAÇÃO DE ARQUIVOS =================${nocolor}"
-	echo "1) Sincronizar Imagens"
-	echo "2) Sincronizar Documentos"
-	echo "3) Sincronizar Vídeos"
-	echo "4) Sincronizar Músicas"
-	echo "5) Sincronizar Arquivos de Jogos"
-	echo "6) Sincronizar Jogos de Android"
-	echo "7) Sincronizar Tudo"
-	echo -e "${blue}-------------------------------------------------------------${nocolor}"
-	echo "8) Sincronizar Imagens (Google Drive)"
-	echo "9) Sincronizar Documentos (Google Drive)"
-	echo "10) Sincronizar Tudo (Google Drive)"
-	echo "0) Sair"
-	echo
-	echo -en "${yellow}Escolha uma opção: ${nocolor}"
-	read -r opcao
-	
-	case "$opcao" in
-		1) rsync -ah --partial --info=progress2 --delete "$imagens1" "$remote:$imagens2" ;;
-		2) rsync -ah --partial --info=progress2 --delete "$documentos1" "$remote:$documentos2" ;;
-		3) rsync -ah --partial --info=progress2 --delete "$videos1" "$remote:$videos2" ;;
-		4) rsync -ah --partial --info=progress2 --delete "$musicas1" "$remote:$musicas2" ;;
-		5) rsync -ah --partial --info=progress2 --delete "$arqdejogos1" "$remote:$arqdejogos2" ;;
-		6) rsync -ah --partial --info=progress2 --delete "$jogosand1" "$remote:$jogosand2" ;;
-		7) sinc_homelab ;;
-		8) rclone sync "$imagens1" "$gdriveremote,root_folder_id=$imagens_gdrive:" -P ;;
-		9) rclone sync "$documentos1" "$gdriveremote,root_folder_id=$documentos_gdrive:" -P ;;
-		10) sinc_remoto ;;
-		0) exit 0 ;;
-		*) echo -en "${red}\nOpção inválida!\n\n${nocolor}"  ;;
-	esac
-	
-done
+safety_checks
+sinc_local
+sinc_remoto
