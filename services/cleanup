@@ -1,0 +1,141 @@
+#!/bin/bash
+
+# Paleta de cores
+yellow='\033[1;33m'
+green='\033[0;32m'
+blue='\033[0;36m'
+red='\033[0;31m'
+nocolor='\033[0m'
+
+# ------------------------------------------------------------------------------------------------------------------- #
+
+sudo -v
+while true; do sudo -v; sleep 60; done &
+sudo_pid=$!
+trap 'kill "$sudo_pid"; sudo -k' EXIT
+
+# ------------------------------------------------------------------------------------------------------------------- #
+
+dnf_cleanup () {
+
+echo -e "${blue}\nRemovendo pacotes baixados do cache do \"dnf\"...${nocolor}"
+sudo dnf clean all
+
+echo -e "${blue}\nRemovendo dependências orfãs do \"dnf\" e os seus arquivos de configuração...${nocolor}"
+sudo dnf autoremove -y
+
+echo -e "${blue}\nRemovendo kernels antigos, mantendo apenas os 2 mais recentes...${nocolor}"
+sudo dnf remove --oldinstallonly --setopt installonly_limit=2 -y
+
+}
+
+# ------------------------------------------------------------------------------------------------------------------- #
+
+apt_cleanup () {
+
+echo -e "${blue}\nRemovendo pacotes do \"apt\" que foram parcialmente instalados...${nocolor}"
+sudo dpkg --configure -a
+sudo apt install -f -y
+
+echo
+echo -e "${blue}\nRemovendo pacotes baixados do cache do \"apt\"...${nocolor}"
+sudo apt clean
+
+echo
+echo -e "${blue}\nRemovendo dependências orfãs do \"apt\" e os seus arquivos de configuração...${nocolor}"
+sudo apt autoremove --purge -y
+
+}
+
+# ------------------------------------------------------------------------------------------------------------------- #
+
+flatpak_cleanup () {
+
+command -v flatpak > /dev/null || return 0
+
+echo -e "${blue}\nRemovendo pacotes e dependências não utilizadas do flatpak...${nocolor}"
+sudo flatpak uninstall --unused -y
+
+}
+
+# ------------------------------------------------------------------------------------------------------------------- #
+
+snap_cleanup () {
+
+command -v snap > /dev/null || return 0
+
+echo -e "${blue}\nRemovendo revisões antigas e desabilitadas de pacotes \"snap\"...${nocolor}"
+sudo snap list --all | awk '/disabled/{print $1, $3}' |
+    while read -r snapname revision; do
+        sudo snap remove "$snapname" --revision="$revision"
+    done
+
+}
+
+# ------------------------------------------------------------------------------------------------------------------- #
+
+trim_cleanup () {
+
+echo -e "${blue}\nExecutando \"fstrim\" em todos os sistemas de arquivos compatíveis...${nocolor}"
+sudo fstrim -av
+
+}
+
+# ------------------------------------------------------------------------------------------------------------------- #
+
+caches_cleanup () {
+
+echo -e "${blue}\nRemovendo arquivos de journal antigos do 'systemd' até o limite de 100 MB...${nocolor}"
+sudo journalctl --vacuum-size=100M
+
+echo -e "${blue}\nLimpando arquivos temporários gerenciados pelo \"systemd-tmpfiles\"...${nocolor}"
+sudo systemd-tmpfiles --clean
+
+echo -en "${yellow}\nDeseja limpar o cache de thumbnails do gerenciador de arquivos? [S/N]${nocolor}"
+read -r resposta
+if [[ "$resposta" == "S" || "$resposta" == "s" ]]; then
+    echo -e "${blue}\nLimpando o cache de thumbnails...${nocolor}"
+    find "$HOME/.cache/thumbnails" -mindepth 1 -delete
+else
+    echo -e "\nO cache de thumbnails não foi apagado."
+fi
+
+}
+
+# ------------------------------------------------------------------------------------------------------------------- #
+
+trash_cleanup () {
+
+echo -en "${yellow}\nDeseja esvaziar a lixeira? [S/N]${nocolor}"
+read -r resposta2
+if [[ "$resposta2" == "S" || "$resposta2" == "s" ]]; then
+    echo -e "${blue}\nEsvaziando a lixeira...${nocolor}"
+    find "$HOME/.local/share/Trash" -mindepth 1 -delete
+else
+    echo -e "\nA lixeira não foi esvaziada."
+fi
+
+}
+
+# ------------------------------------------------------------------------------------------------------------------- #
+
+clear
+
+if command -v apt > /dev/null; then
+    apt_cleanup
+elif command -v dnf > /dev/null; then
+    dnf_cleanup
+else
+    echo -e "${red}\nUm gerenciador de pacotes compatível não foi encontrado.${nocolor}"
+    exit 2
+fi
+
+flatpak_cleanup
+snap_cleanup
+trim_cleanup
+caches_cleanup
+trash_cleanup
+
+echo -e "${green}\nScript finalizado!${nocolor}"
+echo -e -n "Pressione ENTER para voltar ao MENU ou CTRL+C para cancelar."
+read -r
