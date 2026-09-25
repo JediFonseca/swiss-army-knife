@@ -20,6 +20,7 @@ while true; do
 	echo "4) Check user-installed systemd services"
 	echo "5) Request VirtualBox VM local IP"
 	echo "6) Run PCData"
+	echo "7) Clean up the system"
 	echo "0) Exit"
 	echo
 	echo -en "${yellow}Escolha uma opção: ${nocolor}"
@@ -56,6 +57,7 @@ while true; do
 			fi
 		fi
 		;;
+		7) "$HOME/.local/bin/services/cleanup" ;;
 		0) echo ;
 		   echo -e "${yellow}Script stopped!${nocolor}" ;
 		   echo ; exit 0 ;;
