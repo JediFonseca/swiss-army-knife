@@ -22,7 +22,7 @@ rm -rf "$installation_path/services"
 rm -f "$installation_path/sak"
 rm -rf "$clone_path"
 
-git clone "https://github.com/JediFonseca/swiss-army-knife" || { echo -e "${red}Error:${nocolor} There was a problem cloning the repository."; exit 1; }
+git clone "https://github.com/JediFonseca/swiss-army-knife" "$clone_path" || { echo -e "${red}Error:${nocolor} There was a problem cloning the repository."; exit 1; }
 
 mkdir -p "$installation_path"
 
