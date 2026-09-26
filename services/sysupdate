@@ -67,4 +67,6 @@ flatpak_update
 snap_update
 
 echo -e "${green}\nScript finalizado!${nocolor}"
+echo -e -n "Pressione ENTER para voltar ao MENU ou CTRL+C para cancelar."
+read -r
 
