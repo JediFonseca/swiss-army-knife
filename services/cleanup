@@ -18,6 +18,8 @@ trap 'kill "$sudo_pid"; sudo -k' EXIT
 
 dnf_cleanup () {
 
+command -v dnf > /dev/null || return 0
+
 echo -e "${blue}\nRemovendo pacotes baixados do cache do \"dnf\"...${nocolor}"
 sudo dnf clean all
 
@@ -33,17 +35,19 @@ sudo dnf remove --oldinstallonly --setopt installonly_limit=2 -y
 
 apt_cleanup () {
 
+command -v apt-get > /dev/null || return 0
+
 echo -e "${blue}\nRemovendo pacotes do \"apt\" que foram parcialmente instalados...${nocolor}"
 sudo dpkg --configure -a
-sudo apt install -f -y
+sudo apt-get install -f -y
 
 echo
 echo -e "${blue}\nRemovendo pacotes baixados do cache do \"apt\"...${nocolor}"
-sudo apt clean
+sudo apt-get clean
 
 echo
 echo -e "${blue}\nRemovendo dependências orfãs do \"apt\" e os seus arquivos de configuração...${nocolor}"
-sudo apt autoremove --purge -y
+sudo apt-get autoremove --purge -y
 
 }
 
@@ -121,15 +125,8 @@ fi
 
 clear
 
-if command -v apt > /dev/null; then
-    apt_cleanup
-elif command -v dnf > /dev/null; then
-    dnf_cleanup
-else
-    echo -e "${red}\nUm gerenciador de pacotes compatível não foi encontrado.${nocolor}"
-    exit 2
-fi
-
+apt_cleanup
+dnf_cleanup
 flatpak_cleanup
 snap_cleanup
 trim_cleanup
