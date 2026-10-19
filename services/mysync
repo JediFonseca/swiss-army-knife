@@ -53,7 +53,7 @@ else
 fi
 
 mountpoint -q /mnt/Backup || { echo -e "${red}Backup não montado!${nocolor}"; exit 1; }
-mountpoint -q "$HOME/.mnt/NAS" || { echo -e "${red}NAS não montado!${nocolor}"; exit 2; }
+#mountpoint -q "$HOME/.mnt/NAS" || { echo -e "${red}NAS não montado!${nocolor}"; exit 2; }
 
 }
 
@@ -106,7 +106,7 @@ rclone sync "$imagens3" "$gdriveremote,root_folder_id=$imagens_gdrive:" -P
 
 safety_checks
 sinc_local
-sinc_remoto
+#sinc_remoto
 
 echo -e -n "${yellow}\nPressione "ENTER" para voltar ao menu ou CTRL+C para cancelar.${nocolor}"
 read -r
