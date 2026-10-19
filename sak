@@ -22,6 +22,7 @@ while true; do
 	echo "6) Run PCData"
 	echo "7) Update the system"
 	echo "8) Clean up the system"
+	echo "9) Montar o NAS"
 	echo "0) Exit"
 	echo
 	echo -en "${yellow}Escolha uma opção: ${nocolor}"
@@ -60,6 +61,7 @@ while true; do
 		;;
 		7) "$HOME/.local/bin/services/sysupdate" ;;
 		8) "$HOME/.local/bin/services/cleanup" ;;
+		9) "$HOME/.local/bin/services/mountnas" ;;
 		0) echo ;
 		   echo -e "${yellow}Script stopped!${nocolor}" ;
 		   echo ; exit 0 ;;
