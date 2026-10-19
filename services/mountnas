@@ -1,0 +1,12 @@
+#!/bin/bash
+
+server="jedifonseca@100.80.135.72"
+serverlocation="/"
+localmountpoint="/home/jedifonseca/.mnt/NAS"
+
+command -v sshfs > /dev/null || exit 1
+
+fusermount -u "$localmountpoint" 2> /dev/null
+mkdir -p "$localmountpoint"
+
+sshfs "$server":"$serverlocation" "$localmountpoint" -o reconnect,ServerAliveInterval=15,ServerAliveCountMax=120 -f
