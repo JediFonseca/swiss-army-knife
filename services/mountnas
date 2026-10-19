@@ -1,5 +1,8 @@
 #!/bin/bash
 
+yellow='\033[1;33m'
+nocolor='\033[0m'
+
 server="jedifonseca@100.80.135.72"
 serverlocation="/"
 localmountpoint="/home/jedifonseca/.mnt/NAS"
@@ -9,4 +12,6 @@ command -v sshfs > /dev/null || exit 1
 fusermount -u "$localmountpoint" 2> /dev/null
 mkdir -p "$localmountpoint"
 
+clear
+echo -e "${yellow}\nPressione CTRL+C para voltar ao menu principal...${nocolor}"
 sshfs "$server":"$serverlocation" "$localmountpoint" -o reconnect,ServerAliveInterval=15,ServerAliveCountMax=120 -f
