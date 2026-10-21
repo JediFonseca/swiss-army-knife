@@ -15,16 +15,14 @@ documentos1="/mnt/dados/Documentos/"
 imagens1="/mnt/dados/Imagens/"
 musicas1="/mnt/dados/Músicas/"
 midias1="/mnt/dados/Mídias/"
-jogos_android1="/mnt/dados/Jogos/Jogos Android/"
-arquivos_de_jogos1="/mnt/dados/Jogos/Arquivos de Jogos/"
+jogos1="/mnt/dados/Jogos/"
 videos1="/mnt/dados/Vídeos/"
 
 documentos2="/mnt/Backup/Documentos/"
 imagens2="/mnt/Backup/Imagens/"
 musicas2="/mnt/Backup/Músicas/"
 midias2="/mnt/Backup/Mídias/"
-jogos_android2="/mnt/Backup/Jogos/Jogos Android/"
-arquivos_de_jogos2="/mnt/Backup/Jogos/Arquivos de Jogos/"
+jogos2="/mnt/Backup/Jogos/"
 videos2="/mnt/Backup/Vídeos/"
 
 # ------------------------------------------------------------------------------------------------------------------------
@@ -62,13 +60,10 @@ rsync -ah --partial --info=progress2 --stats --delete "$remote:$musicas1" "$musi
 echo -e "${yellow}\nSincronizando as Mídias...${nocolor}"
 rsync -ah --partial --info=progress2 --stats --delete "$remote:$midias1" "$midias2"
 
-echo -e "${yellow}\nSincronizando os Jogos de Android...${nocolor}"
-rsync -ah --partial --info=progress2 --stats --delete "$remote:$jogos_android1" "$jogos_android2"
+echo -e "${yellow}\nSincronizando os Jogos...${nocolor}"
+rsync -ah --partial --info=progress2 --stats --delete "$remote:$jogos1" "$jogos2"
 
-echo -e "${yellow}\nSincronizando os Arquivos de Jogos...${nocolor}"
-rsync -ah --partial --info=progress2 --stats --delete "$remote:$arquivos_de_jogos1" "$arquivos_de_jogos2"
-
-echo -e "${yellow}\nSincronizando os Vídeos Diversos...${nocolor}"
+echo -e "${yellow}\nSincronizando os Vídeos...${nocolor}"
 rsync -ah --partial --info=progress2 --stats --delete "$remote:$videos1" "$videos2"
 
 }
