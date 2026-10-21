@@ -17,9 +17,7 @@ musicas1="/mnt/dados/Músicas/"
 midias1="/mnt/dados/Mídias/"
 jogos_android1="/mnt/dados/Jogos/Jogos Android/"
 arquivos_de_jogos1="/mnt/dados/Jogos/Arquivos de Jogos/"
-videos_diversos1="/mnt/dados/Vídeos/Diversos/"
-videos_friends1="/mnt/dados/Vídeos/Friends/"
-videos_shows1="/mnt/dados/Vídeos/Shows/"
+videos1="/mnt/dados/Vídeos/"
 
 documentos2="/mnt/Backup/Documentos/"
 imagens2="/mnt/Backup/Imagens/"
@@ -27,15 +25,7 @@ musicas2="/mnt/Backup/Músicas/"
 midias2="/mnt/Backup/Mídias/"
 jogos_android2="/mnt/Backup/Jogos/Jogos Android/"
 arquivos_de_jogos2="/mnt/Backup/Jogos/Arquivos de Jogos/"
-videos_diversos2="/mnt/Backup/Vídeos/Diversos/"
-videos_friends2="/mnt/Backup/Vídeos/Friends/"
-videos_shows2="/mnt/Backup/Vídeos/Shows/"
-
-gdriveremote="gdrive"
-documentos3="$HOME/.mnt/NAS/mnt/dados/Documentos/"
-imagens3="$HOME/.mnt/NAS/mnt/dados/Imagens/"
-imagens_gdrive="18uxD5feGq2Aul8GsDdRmas4MmNPHaiJC"
-documentos_gdrive="1r9MjQEYrFilu-qJneK24_NaqxjRU3--K"
+videos2="/mnt/Backup/Vídeos/"
 
 # ------------------------------------------------------------------------------------------------------------------------
 
@@ -53,7 +43,6 @@ else
 fi
 
 mountpoint -q /mnt/Backup || { echo -e "${red}Backup não montado!${nocolor}"; exit 1; }
-#mountpoint -q "$HOME/.mnt/NAS" || { echo -e "${red}NAS não montado!${nocolor}"; exit 2; }
 
 }
 
@@ -80,25 +69,7 @@ echo -e "${yellow}\nSincronizando os Arquivos de Jogos...${nocolor}"
 rsync -ah --partial --info=progress2 --stats --delete "$remote:$arquivos_de_jogos1" "$arquivos_de_jogos2"
 
 echo -e "${yellow}\nSincronizando os Vídeos Diversos...${nocolor}"
-rsync -ah --partial --info=progress2 --stats --delete "$remote:$videos_diversos1" "$videos_diversos2"
-
-echo -e "${yellow}\nSincronizando os Vídeos de Friends...${nocolor}"
-rsync -ah --partial --info=progress2 --stats --delete "$remote:$videos_friends1" "$videos_friends2"
-
-echo -e "${yellow}\nSincronizando os Vídeos de Shows...${nocolor}"
-rsync -ah --partial --info=progress2 --stats --delete "$remote:$videos_shows1" "$videos_shows2"
-
-}
-
-# ------------------------------------------------------------------------------------------------------------------------
-
-sinc_remoto () {
-
-echo -e "${yellow}\nSincronizando os Documentos com o Google Drive...${nocolor}"
-rclone sync "$documentos3" "$gdriveremote,root_folder_id=$documentos_gdrive:" -P
-
-echo -e "${yellow}\nSincronizando as Imagens com o Google Drive...${nocolor}"
-rclone sync "$imagens3" "$gdriveremote,root_folder_id=$imagens_gdrive:" -P
+rsync -ah --partial --info=progress2 --stats --delete "$remote:$videos1" "$videos2"
 
 }
 
@@ -106,7 +77,6 @@ rclone sync "$imagens3" "$gdriveremote,root_folder_id=$imagens_gdrive:" -P
 
 safety_checks
 sinc_local
-#sinc_remoto
 
 echo -e -n "${yellow}\nPressione "ENTER" para voltar ao menu ou CTRL+C para cancelar.${nocolor}"
 read -r
