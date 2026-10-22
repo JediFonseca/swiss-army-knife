@@ -37,7 +37,7 @@ clear
 
 echo -e "${blue}Testando conexão com o Serverus...${nocolor}"
 
-if ping -c3 -W3 $remote_ip > /dev/null; then
+if ping -c3 -W3 "$remote_ip" > /dev/null; then
     echo -e "${green}\nConexão OK!${nocolor}"
 else
     echo -e "${red}\nServidor não responde!${nocolor}"
@@ -53,7 +53,7 @@ mountpoint -q /mnt/Backup || { echo -e "${red}Backup não montado!${nocolor}"; e
 permissions () {
 
 echo -e "${yellow}\nExecutando o chmod...${nocolor}"
-ssh $remote "echo $senhasudo | sudo -S chmod -R 776 /mnt/dados/"
+ssh $remote "echo '$senhasudo' | sudo -S chmod -R 776 /mnt/dados/"
 
 }
 
@@ -90,5 +90,5 @@ safety_checks
 permissions
 sinc_local
 
-echo -e -n "${yellow}\nPressione "ENTER" para voltar ao menu ou CTRL+C para cancelar.${nocolor}"
+echo -e -n "${yellow}\nPressione ENTER para voltar ao menu ou CTRL+C para cancelar.${nocolor}"
 read -r
