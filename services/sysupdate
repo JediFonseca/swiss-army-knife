@@ -17,10 +17,10 @@ apt_update () {
 
 command -v apt-get > /dev/null || return 0
 
-echo -e "${yellow}\nAtualizando os repositórios do sistema...${nocolor}"
+echo -e "${blue}\nAtualizando os repositórios do sistema...${nocolor}"
 sudo apt-get update
 
-echo -e "${yellow}\nAtualizando o sistema...${nocolor}"
+echo -e "${blue}\nAtualizando o sistema...${nocolor}"
 sudo apt-get full-upgrade -y
 
 }
@@ -31,7 +31,7 @@ dnf_update () {
 
 command -v dnf > /dev/null || return 0
 
-echo -e "${yellow}\nAtualizando o sistema...${nocolor}"
+echo -e "${blue}\nAtualizando o sistema...${nocolor}"
 sudo dnf upgrade -y
 
 }
@@ -42,7 +42,7 @@ flatpak_update () {
 
 command -v flatpak > /dev/null || return 0
 
-echo -e "${yellow}\nAtualizando os aplicativos em flatpak...${nocolor}"
+echo -e "${blue}\nAtualizando os aplicativos em flatpak...${nocolor}"
 sudo flatpak upgrade -y --noninteractive --system
 flatpak upgrade -y --noninteractive --user
 
@@ -54,7 +54,7 @@ snap_update () {
 
 command -v snap > /dev/null || return 0
 
-echo -e "${yellow}\nAtualizando os aplicativos em Snap...${nocolor}"
+echo -e "${blue}\nAtualizando os aplicativos em Snap...${nocolor}"
 sudo snap refresh
 
 }
@@ -67,6 +67,6 @@ flatpak_update
 snap_update
 
 echo -e "${green}\nScript finalizado!${nocolor}"
-echo -e -n "Pressione ENTER para voltar ao MENU ou CTRL+C para cancelar."
+echo -e -n "${yellow}Pressione ENTER para voltar ao MENU ou CTRL+C para cancelar.${nocolor}"
 read -r
 
