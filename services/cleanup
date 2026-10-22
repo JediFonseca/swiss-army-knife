@@ -134,5 +134,5 @@ caches_cleanup
 trash_cleanup
 
 echo -e "${green}\nScript finalizado!${nocolor}"
-echo -e -n "Pressione ENTER para voltar ao MENU ou CTRL+C para cancelar."
+echo -e -n "${yellow}Pressione ENTER para voltar ao MENU ou CTRL+C para cancelar.${nocolor}"
 read -r
