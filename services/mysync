@@ -52,8 +52,8 @@ mountpoint -q /mnt/Backup || { echo -e "${red}Backup não montado!${nocolor}"; e
 
 permissions () {
 
-echo -e "${blue}\nExecutando o chmod...${nocolor}"
-ssh $remote "echo '$senhasudo' | sudo -S chmod -R 776 /mnt/dados/ > /dev/null"
+echo -e "${blue}\nExecutando o chmod. Inserindo a senha automaticamente, aguarde...${nocolor}"
+ssh $remote "echo '$senhasudo' | sudo -S chmod -R 777 /mnt/dados/"
 
 }
 
@@ -61,7 +61,7 @@ ssh $remote "echo '$senhasudo' | sudo -S chmod -R 776 /mnt/dados/ > /dev/null"
 
 sinc_local () {
 
-echo -e "${blue}\nSincronizando os Documentos...${nocolor}"
+echo -e "${blue}\n\nSincronizando os Documentos...${nocolor}"
 rsync -ah --partial --info=progress2 --stats --delete "$remote:$documentos1" "$documentos2"
 
 echo -e "${blue}\nSincronizando as Imagens...${nocolor}"
