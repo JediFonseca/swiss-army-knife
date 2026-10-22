@@ -17,6 +17,7 @@ musicas1="/mnt/dados/Músicas/"
 midias1="/mnt/dados/Mídias/"
 jogos1="/mnt/dados/Jogos/"
 videos1="/mnt/dados/Vídeos/"
+nextcloud1="/mnt/dados/Nextcloud/"
 
 documentos2="/mnt/Backup/Documentos/"
 imagens2="/mnt/Backup/Imagens/"
@@ -24,6 +25,7 @@ musicas2="/mnt/Backup/Músicas/"
 midias2="/mnt/Backup/Mídias/"
 jogos2="/mnt/Backup/Jogos/"
 videos2="/mnt/Backup/Vídeos/"
+nextcloud2="/mnt/Backup/Nextcloud/"
 
 # ------------------------------------------------------------------------------------------------------------------------
 
@@ -41,6 +43,15 @@ else
 fi
 
 mountpoint -q /mnt/Backup || { echo -e "${red}Backup não montado!${nocolor}"; exit 1; }
+
+}
+
+# ------------------------------------------------------------------------------------------------------------------------
+
+permissions () {
+
+echo -e "${yellow}\nExecutando o chmod...${nocolor}"
+ssh -t $remote "sudo chmod 776 -R /mnt/dados"
 
 }
 
@@ -66,11 +77,15 @@ rsync -ah --partial --info=progress2 --stats --delete "$remote:$jogos1" "$jogos2
 echo -e "${yellow}\nSincronizando os Vídeos...${nocolor}"
 rsync -ah --partial --info=progress2 --stats --delete "$remote:$videos1" "$videos2"
 
+echo -e "${yellow}\nSincronizando os arquivos do Nextcloud...${nocolor}"
+rsync -ah --partial --info=progress2 --stats --delete "$remote:$nextcloud1" "$nextcloud2"
+
 }
 
 # ------------------------------------------------------------------------------------------------------------------------
 
 safety_checks
+permissions
 sinc_local
 
 echo -e -n "${yellow}\nPressione "ENTER" para voltar ao menu ou CTRL+C para cancelar.${nocolor}"
