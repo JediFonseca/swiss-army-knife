@@ -52,7 +52,7 @@ mountpoint -q /mnt/Backup || { echo -e "${red}Backup não montado!${nocolor}"; e
 
 permissions () {
 
-echo -e "${yellow}\nExecutando o chmod...${nocolor}"
+echo -e "${blue}\nExecutando o chmod...${nocolor}"
 ssh $remote "echo '$senhasudo' | sudo -S chmod -R 776 /mnt/dados/"
 
 }
@@ -61,25 +61,25 @@ ssh $remote "echo '$senhasudo' | sudo -S chmod -R 776 /mnt/dados/"
 
 sinc_local () {
 
-echo -e "${yellow}\nSincronizando os Documentos...${nocolor}"
+echo -e "${blue}\nSincronizando os Documentos...${nocolor}"
 rsync -ah --partial --info=progress2 --stats --delete "$remote:$documentos1" "$documentos2"
 
-echo -e "${yellow}\nSincronizando as Imagens...${nocolor}"
+echo -e "${blue}\nSincronizando as Imagens...${nocolor}"
 rsync -ah --partial --info=progress2 --stats --delete "$remote:$imagens1" "$imagens2"
 
-echo -e "${yellow}\nSincronizando as Músicas...${nocolor}"
+echo -e "${blue}\nSincronizando as Músicas...${nocolor}"
 rsync -ah --partial --info=progress2 --stats --delete "$remote:$musicas1" "$musicas2"
 
-echo -e "${yellow}\nSincronizando as Mídias...${nocolor}"
+echo -e "${blue}\nSincronizando as Mídias...${nocolor}"
 rsync -ah --partial --info=progress2 --stats --delete "$remote:$midias1" "$midias2"
 
-echo -e "${yellow}\nSincronizando os Jogos...${nocolor}"
+echo -e "${blue}\nSincronizando os Jogos...${nocolor}"
 rsync -ah --partial --info=progress2 --stats --delete "$remote:$jogos1" "$jogos2"
 
-echo -e "${yellow}\nSincronizando os Vídeos...${nocolor}"
+echo -e "${blue}\nSincronizando os Vídeos...${nocolor}"
 rsync -ah --partial --info=progress2 --stats --delete "$remote:$videos1" "$videos2"
 
-echo -e "${yellow}\nSincronizando os arquivos do Nextcloud...${nocolor}"
+echo -e "${blue}\nSincronizando os arquivos do Nextcloud...${nocolor}"
 rsync -ah --partial --info=progress2 --stats --delete "$remote:$nextcloud1" "$nextcloud2"
 
 }
