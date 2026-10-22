@@ -53,7 +53,7 @@ mountpoint -q /mnt/Backup || { echo -e "${red}Backup não montado!${nocolor}"; e
 permissions () {
 
 echo -e "${blue}\nExecutando o chmod...${nocolor}"
-ssh $remote "echo '$senhasudo' | sudo -S chmod -R 776 /mnt/dados/"
+ssh $remote "echo '$senhasudo' | sudo -S chmod -R 776 /mnt/dados/ > /dev/null"
 
 }
 
