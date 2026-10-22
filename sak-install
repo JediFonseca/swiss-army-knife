@@ -36,5 +36,5 @@ chmod +x "$installation_path/services/"*
 
 echo -e "${yellow}Você precisa editar a senha do sudo do servidor no arquivo 'mysync'.${nocolor}"
 echo -e -n "${yellow}Pressione ENTER para editar o arquivo com o NANO ou CTRL+C para cancelar.${nocolor}"
-read
-nano "$HOME/.local/bin/services/mysync"
+read -r < /dev/tty
+nano "$HOME/.local/bin/services/mysync" < /dev/tty
