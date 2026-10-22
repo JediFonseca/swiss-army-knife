@@ -8,6 +8,8 @@ yellow='\033[1;33m'
 red='\033[0;31m'
 nocolor='\033[0m'
 
+senhasudo="exemplodesenha"
+
 remote="jedifonseca@100.80.135.72"
 remote_ip="100.80.135.72"
 
@@ -51,7 +53,7 @@ mountpoint -q /mnt/Backup || { echo -e "${red}Backup não montado!${nocolor}"; e
 permissions () {
 
 echo -e "${yellow}\nExecutando o chmod...${nocolor}"
-ssh -t $remote "sudo chmod 776 -R /mnt/dados"
+ssh $remote "echo $senhasudo | sudo -S chmod -R 776 /mnt/dados/"
 
 }
 
