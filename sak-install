@@ -34,7 +34,5 @@ rm -rf "$clone_path"
 chmod +x "$installation_path/sak"
 chmod +x "$installation_path/services/"*
 
-echo -e "${yellow}Você precisa editar a senha do sudo do servidor no arquivo 'mysync'.${nocolor}"
-echo -e -n "${yellow}Pressione ENTER para editar o arquivo com o NANO ou CTRL+C para cancelar.${nocolor}"
-read -r < /dev/tty
-nano "$HOME/.local/bin/services/mysync" < /dev/tty
+echo -e "${red}\nATENÇÃO:${nocolor}"
+echo -e "Você precisa editar a senha do 'sudo' do servidor nos arquivos 'mysync', 'sysupdate' e 'cleanup'."
