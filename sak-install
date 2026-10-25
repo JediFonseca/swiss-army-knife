@@ -31,10 +31,8 @@ cp "$clone_path/sak" "$installation_path"
 
 rm -rf "$clone_path"
 
-chmod +x "$installation_path/sak"
-chmod +x "$installation_path/services/"*
-
-sudo chmod -R 700 "$HOME/.local/bin/services/"
+sudo chmod 700 "$installation_path/sak"
+sudo chmod -R 700 "$installation_path/services/"
 
 echo -e "${red}\nATENÇÃO:${nocolor}"
 echo -e "Você precisa editar a senha do 'sudo' nos arquivos 'mysync', 'sysupdate' e 'cleanup'."
