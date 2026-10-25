@@ -7,9 +7,11 @@ blue='\033[0;36m'
 red='\033[0;31m'
 nocolor='\033[0m'
 
+senhasudo="exemplodesenha"
+
 # ------------------------------------------------------------------------------------------------------------------- #
 
-sudo -v
+echo "$senhasudo" | sudo -S -v
 while true; do sudo -v; sleep 60; done &
 sudo_pid=$!
 trap 'kill "$sudo_pid"; sudo -k' EXIT
