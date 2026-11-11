@@ -33,6 +33,3 @@ rm -rf "$clone_path"
 
 sudo chmod 700 "$installation_path/sak"
 sudo chmod -R 700 "$installation_path/services/"
-
-echo -e "${red}\nATENÇÃO:${nocolor}"
-echo -e "Você precisa editar a senha do 'sudo' nos arquivos 'mysync', 'sysupdate' e 'cleanup'."
