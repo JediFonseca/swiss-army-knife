@@ -12,7 +12,7 @@ while true; do
 	
 	echo -e "${blue}========================= SWISS ARMY KNIFE - MAIN MENU =========================${nocolor}"
 	echo
-	echo "Version: 1.2"
+	echo "Version: 1.3"
 	echo
 	echo "1) Files syncing"
 	echo "2) Access homelab"
