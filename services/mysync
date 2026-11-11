@@ -10,8 +10,8 @@ nocolor='\033[0m'
 
 senhasudo="exemplodesenha"
 
-remote="jedifonseca@100.80.135.72"
-remote_ip="100.80.135.72"
+remote="jedifonseca@100.106.24.12"
+remote_ip="100.106.24.12"
 
 documentos1="/mnt/dados/Documentos/"
 imagens1="/mnt/dados/Imagens/"
