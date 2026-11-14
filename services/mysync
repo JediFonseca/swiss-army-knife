@@ -17,7 +17,7 @@ musicas1="$HOME/Documentos/Dados/Músicas/"
 midias1="$HOME/Documentos/Dados/Mídias/"
 jogos1="$HOME/Documentos/Dados/Jogos/"
 videos1="$HOME/Documentos/Dados/Vídeos/"
-nextcloud1="$HOME/Documentos/Dados/Nextcloud/"
+nextcloud1="$HOME/Documentos/Nextcloud/"
 
 documentos2="/mnt/Backup/Documentos/"
 imagens2="/mnt/Backup/Imagens/"
