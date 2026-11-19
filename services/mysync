@@ -48,6 +48,15 @@ mountpoint -q /mnt/Backup || { echo -e "${red}Backup não montado!${nocolor}"; e
 
 # ------------------------------------------------------------------------------------------------------------------------
 
+permissions () {
+
+echo -e "${blue}\nExecutando o chmod...${nocolor}"
+ssh -t $remote "sudo chmod -R 777 $HOME/Documentos"
+
+}
+
+# ------------------------------------------------------------------------------------------------------------------------
+
 sinc_local () {
 
 echo -e "${blue}\n\nSincronizando os Documentos...${nocolor}"
@@ -76,6 +85,7 @@ rsync -ah --partial --info=progress2 --stats --delete "$remote:$nextcloud1" "$ne
 # ------------------------------------------------------------------------------------------------------------------------
 
 safety_checks
+permissions
 sinc_local
 
 echo -e -n "${yellow}\nPressione ENTER para voltar ao menu ou CTRL+C para cancelar.${nocolor}"
